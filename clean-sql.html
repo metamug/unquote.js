@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	
+ 	<meta name="description" content="Parameter Validation for Resource File Metamug" />
+    <meta name="keyword" content="clean, string, SQL, plus, mutliline, mysql, postgre, sqlite, jdbc, preparedstatement, resultset">
+    <meta property="og:title" content="Clean Concatenated SQL String" />
+    <meta property="og:description"  content="Save your time. Convert long concatenated sql statements into executable sql query" />
+    <meta property="og:image" content="http://www.metamug.com/super-hero-logo.png" /> 
+    <meta property="og:site_name" content="Metamug" />
+    <meta property="og:url" content="http://www.metamug.com/" />
+<head>
+	<title>Clean SQL</title>
+	<style type="text/css">
+	body {
+    	background-color: #d3c9ff;
+    	margin: 0;
+	}    
+	#wrapper {
+	     width: 1005px;
+	     margin: 30px 100px;
+	}
+	#beforeDiv{
+		padding-bottom: 10px;
+	}
+	#txt-string-sql, #txt-output-sql{
+		min-width: 100%;
+		min-height: 240px;
+	}
+	</style>
+
+</head>
+<body>
+<div id="wrapper">
+	<h1>
+		Clean My SQL 
+	</h1>
+	<p> Replace SQL in concatenated string to clean SQL syntax.</p>
+	
+
+    <div id="beforeDiv">
+        <textarea id="txt-string-sql" placeholder="Paste your concatenated SQL here."></textarea>
+        Replace Concatenated Variable with :<input id="input-var-text" placeholder="Replace Variable" type="text">
+    </div>
+    <div id="afterDiv">
+        <textarea id="txt-output-sql" placeholder="Clean Sql will appear here"></textarea>
+    </div>
+</div>
+<script type="text/javascript">
+	
+	function cleanSql(){
+		var varInputText = document.getElementById('input-var-text');
+		var stringSql = document.getElementById('txt-string-sql').value;
+		
+		//remove escaped quotes inside the string
+		stringSql = stringSql.replace(/\\'|\\"/g, '\''); 
+		var regexVar = /["']+[ \n\t]*\+[ \n\t]*(\w+)[ \n\t]*\+[ \n\t]*['"]+/g; 
+		//replace variable with value
+		var replaceText = varInputText.value ? varInputText.value : '$1'; 
+		stringSql = stringSql.replace(regexVar, replaceText);
+		debugger;
+
+		//regex for each line
+		var regex = /"(.*?)"/g;
+		var m;
+		var output = '';
+		while ((m = regex.exec(stringSql)) !== null) {
+		    if (m.index === regex.lastIndex) {
+		        regex.lastIndex++;
+		    }
+	    	output = output + m[1] + '\n';
+		}
+		document.getElementById('txt-output-sql').value = output;
+	}
+</script>
+
+</body></html>
